@@ -4,7 +4,7 @@ import boto3, logging
 
 # Setup Logging
 logger = logging.getLogger('ec2ctrl.py')
-hdlr = logging.FileHandler('/var/log/ec2ctrl.og')
+hdlr = logging.FileHandler('/var/log/ec2ctrl.log')
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
 hdlr.setFormatter(formatter)
 logger.addHandler(hdlr)
