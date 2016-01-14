@@ -11,19 +11,18 @@ logger.addHandler(hdlr)
 logger.setLevel(logging.INFO)
 
 
-# .aws\credentials profiles to loop through
+# .aws\credentials profiles to loop through - configure regions in credentials file - region = us-east-1 etc
 profiles = ["imagingqa", "imagingdev", "mobiledev", "dataservicesdev", "dataservicesqa", "javastacksdev"]
 
 # Loop through profiles and perform shutdown
 for i in profiles:
     profile = i
-    region = 'us-east-1'
-    session = boto3.Session(profile_name = profile, region_name=region)
+    session = boto3.Session(profile_name = profile)
     ec2 = session.resource('ec2')
-
 # Loop through instances on each account to find all running instances to perform shutdown on
     instances = ec2.instances.filter(
         Filters=[{'Name': 'instance-state-name', 'Values': ['running']}])
     for instance in instances:
+        print("Found and shut down %s %s in %s" % (instance.id, instance.instance_type, i))
         logger.info("Found and shut down %s %s in %s" % (instance.id, instance.instance_type, i))
         instances.stop()
